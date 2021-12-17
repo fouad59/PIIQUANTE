@@ -3,12 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-// importation de crypto-js pour crypter l'adresse mail
-const cryptojs = require('crypto-js');
-
-// crypter l'email
-//const emailCrypto = cryptojs.HmacSHA256(req.body.email, process.env.CRYPTOJS_EMAIL).toString();
-
 // importation du models
 const User = require('../models/user');
 

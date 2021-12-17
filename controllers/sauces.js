@@ -41,7 +41,7 @@ exports.deleteSauce = (req, res, next) => {
                   error: new Error('Unauthorized request!')
                 });
             }
-            // ----------FIN empecher n'importe quel utilisateur de supprimer une sauce ---------
+            // ----------FIN empecher n'importe quel utilisateur de supprimer une sauce --------- 
             const filename = sauce.imageUrl.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
                 Sauce.deleteOne({ _id: req.params.id })
