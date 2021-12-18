@@ -17,28 +17,23 @@ exports.createSauce = (req, res, next) => {
 // --------- MODIFIER UNE SAUCE ----------
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ?
-        { 
+        {
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : { ...req.body};
-    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+    Sauce.updateOne({ _id: req.params.id, userId: req.auth.userId}, { ...sauceObject, _id: req.params.id })
       .then(() => res.status(200).json({ message: 'Sauce modifié !'}))
       .catch(error => res.status(400).json({ error }));
 };
 
 // --------- SUPPRIMER UNE SAUCE ----------
 exports.deleteSauce = (req, res, next) => {
-    Sauce.findOne({ _id: req.params.id}).then
+    Sauce.findOne({ _id: req.params.id, userId: req.auth.userId}).then
         (sauce => {
             // ---------- empecher n'importe quel utilisateur de supprimer une sauce ---------
             if (!sauce) {
                 res.status(404).json({
                   error: new Error('No such Sauce!')
-                });
-              }
-              if (sauce.userId !== req.auth.userId) {
-                res.status(401).json({
-                  error: new Error('Unauthorized request!')
                 });
             }
             // ----------FIN empecher n'importe quel utilisateur de supprimer une sauce --------- 
